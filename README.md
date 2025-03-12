@@ -162,6 +162,23 @@ ansible-playbook run.yml --ask-vault-pass
 ```
 ### Optional Settings:
 ---
+To integrate Ansible with your AWS instance, you can configure your Ansible Playbook with the following example. This is an optional setting that allows for secure SSH access and management of your host.
+
+```yml
+- hosts: Staging
+  remote_user: ubuntu
+  become: yes
+  vars:
+    ansible_ssh_private_key_file: /path/to/keypair.pem
+  tasks:
+  - name: Update and upgrade apt packages
+    become: yes
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+  
+```
+
+This configuration will update and upgrade the `apt` packages on the remote system as part of your playbook. Adjust the file paths and settings according to your environment.
+
 > [!note] 
 > This configuration is used to disable **host key checking** in Ansible, which is helpful in situations where you want to avoid the security prompt that asks whether to trust a remote host's key when connecting for the first time or if the host's key has changed.
 > 
