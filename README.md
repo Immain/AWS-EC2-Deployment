@@ -160,7 +160,12 @@ We will now run our Ansible Playbook with Ansible Vault. Use the following comma
 ```shell
 ansible-playbook run.yml --ask-vault-pass
 ```
-#### Optional Settings:
+### Optional Settings:
+---
+> [!note] 
+> This configuration is used to disable **host key checking** in Ansible, which is helpful in situations where you want to avoid the security prompt that asks whether to trust a remote host's key when connecting for the first time or if the host's key has changed.
+> 
+> In automated environments, such as when provisioning many servers with Ansible, these prompts can interrupt the workflow, requiring manual intervention. Disabling host key checking allows the playbook to continue without waiting for user input, which is useful for continuous integration/continuous deployment (CI/CD) setups or when managing a large number of hosts where manually accepting keys would be impractical.
 
 To bypass host key verification and prevent the following prompt:
 
@@ -177,10 +182,5 @@ Simply create an ```ansible.cfg``` file with the following configuration:
 [defaults]
 host_key_checking: false
 ```
-
-> [!note] 
-> This configuration is used to disable **host key checking** in Ansible, which is helpful in situations where you want to avoid the security prompt that asks whether to trust a remote host's key when connecting for the first time or if the host's key has changed.
-> 
-> In automated environments, such as when provisioning many servers with Ansible, these prompts can interrupt the workflow, requiring manual intervention. Disabling host key checking allows the playbook to continue without waiting for user input, which is useful for continuous integration/continuous deployment (CI/CD) setups or when managing a large number of hosts where manually accepting keys would be impractical.
 
 
