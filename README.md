@@ -154,5 +154,9 @@ xxxxx
 
 ### Step Six: Running The Playbook
 ---
+We will now run our Ansible Playbook with Ansible Vault. Use the following command to run the playbook:
 
+```shell
+ansible-playbook run.yml --ask-vault-pass
+```
 
