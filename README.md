@@ -116,6 +116,41 @@ vars_files:
 
 ### Step Five: Ansible Vault
 ---
+After creating our **vars.yml** file, we will use **Ansible Vault** to encrypt our sensitive information. Use the following commands:
+
+```shell
+cd group_vars/
+```
+
+```shell
+sudo ansible-vault encrypt vars.yml
+```
+
+You will be asked to **create a new vault password** and to **confirm the vault password**
+
+```shell
+New Vault Password:
+Confirm New Vault Password:
+```
+
+If successful, you should see the following message:
+
+```shell
+Encryption successful
+```
+
+Verify that your files have been encrypted using the following command:
+
+```shell
+sudo cat /group_vars/vars.yml
+```
+
+You should now see the following:
+
+```shell
+$ANSIBLE_VAULT;1.1;AES256
+xxxxx
+```
 
 ### Step Six: Running The Playbook
 ---
