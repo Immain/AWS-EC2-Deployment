@@ -153,6 +153,26 @@ $ANSIBLE_VAULT;1.1;AES256
 xxxxx
 ```
 
+### Editing Your Ansible Vault:
+
+To edit your Ansible Vault **vars.yml** file, change directories into your group_vars folder:
+
+```shell
+cd group_vars/
+```
+
+Then use the following command:
+
+```shell
+ansible-vault edit vars.yml
+```
+
+To view the un-encrypted **vars.yml** file, use the following command:
+
+```shell
+ansible-vault view vars.yml
+```
+
 ### Step Six: Running The Playbook
 ---
 We will now run our Ansible Playbook with Ansible Vault. Use the following command to run the playbook:
