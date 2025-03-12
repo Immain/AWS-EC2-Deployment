@@ -52,6 +52,8 @@ These instructions will walk you through setting up your Amazon EC2 Instances fo
 
 ### Step Two: Create an AWS EC2 Key Pair
 ---
+> [!IMPORTANT]  
+> Make sure that you select the correct region in AWS before creating your Key Pair or you will receive an error.
 
 1. Navigate to **aws.amazon.com**, login, and then click on **"AWS Management Console"** 
 
@@ -67,7 +69,6 @@ These instructions will walk you through setting up your Amazon EC2 Instances fo
 
 ### Step Three: Using the Key Pair
 ---
-
 This task is specifically for handling the .pem (Privacy Enhanced Mail) key file that AWS provides when you create a new key pair in the AWS Management Console.
 
 ```yml
