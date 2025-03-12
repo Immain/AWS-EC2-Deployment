@@ -1,0 +1,73 @@
+--- 
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./group_vars/vars.yml
+  tasks:
+
+# Create Amazon AWS Security Group
+  - name: Create AWS Security Group
+    amazon.aws.ec2_security_group:
+      name: "{{ security_group }}"
+      description: "{{ security_group_description }}"
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      region: us-west-1
+      rules:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 443
+          to_port: 443
+          cidr_ip: 0.0.0.0/0
+      rules_egress:
+        - proto: all
+          cidr_ip: 0.0.0.0/0
+
+# Provision EC2 Instance
+  - name: Start an EC2 Instance
+    amazon.aws.ec2_instance:
+      name: "{{ instance_name }}"
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      key_name: "{{ key_name }}" # Amazon EC2 Key Pairs (AWS Management Console)
+      instance_type: "{{ instance_type }}"
+      image_id: "{{ image_id }}" 
+      region: "{{ region }}"
+      detailed_monitoring: false # Whether to allow detailed CloudWatch metrics to be collected, enabling more detailed alerting.
+      network_interfaces:
+        assign_public_ip: true
+        security_group: "{{ security_group }}"
+      wait: true
+      wait_timeout: 300
+      termination_protection: false # This module will not terminate an instance with termination protection active, it must be turned off first.
+      state: running
+    register: ec2
+
+# Set Permissions for Key Pairs
+  - name: Ensure Key is Not Publicly Viewable
+    file:
+      path: /path/to/pem # This will be the Key Pair file you got from the AWS console
+      mode: '0400'
+    delegate_to: localhost
+
+# Add AWS Instance IP to Hosts File
+  - name: Add the newly created host so that we can further contact it
+    add_host:
+      name: "{{ item.public_ip_address }}"
+      groups: Staging
+    with_items: "{{ ec2.instances }}"
+
+# Wait for SSH on EC2 Instance to become available
+  - name: Wait for SSH to come up
+    wait_for:
+      host: "{{ item.public_dns_name }}"
+      port: 22
+      state: started
+    with_items: "{{ ec2.instances }}"
