@@ -41,7 +41,7 @@
       image_id: "{{ image_id }}" 
       region: "{{ region }}"
       detailed_monitoring: false # Whether to allow detailed CloudWatch metrics to be collected, enabling more detailed alerting.
-      network_interfaces:
+      network: # Note: This field is deprecated and will be removed in a release after 2026-12-01. Use network_interfaces or network_interfaces_ids instead
         assign_public_ip: true
         security_group: "{{ security_group }}"
       wait: true
